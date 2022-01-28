@@ -35,13 +35,7 @@ void ATheTool::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FHitResult HitResult;
-	const FVector StartTrace{ GetActorLocation() };
-	const FVector EndTrace{ StartTrace + (FVector::DownVector * Height) };
-	if (GetWorld()->LineTraceSingleByChannel(
-		HitResult, StartTrace,
-		EndTrace, ECC_WorldStatic,
-		FCollisionQueryParams()))
+	if (IsOnGround())
 	{
 		FallVelocity = FallInitialVelocity;
 	}
@@ -104,7 +98,10 @@ void ATheTool::Right(const float Amount)
 
 void ATheTool::Up(const float Amount)
 {
-	FPMove->AddInputVector(FVector::UpVector * (Amount * UpSpeed));
+	if (IsOnGround())
+	{
+		FPMove->AddInputVector(FVector::UpVector * (Amount * UpSpeed));
+	}
 }
 
 void ATheTool::ResetRoll()
@@ -122,5 +119,16 @@ void ATheTool::TurnToRollOn()
 void ATheTool::TurnToRollOff()
 {
 	IsTurnToRoll = false;
+}
+
+bool ATheTool::IsOnGround()
+{
+	FHitResult HitResult;
+	const FVector StartTrace{ GetActorLocation() };
+	const FVector EndTrace{ StartTrace + (FVector::DownVector * Height) };
+	return GetWorld()->LineTraceSingleByChannel(
+		HitResult, StartTrace,
+		EndTrace, ECC_WorldStatic,
+		FCollisionQueryParams());
 }
 

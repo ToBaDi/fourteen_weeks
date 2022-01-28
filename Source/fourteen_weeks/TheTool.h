@@ -62,4 +62,6 @@ private:
 	class UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* FPMove;
+
+	bool IsOnGround();
 };
