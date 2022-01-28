@@ -39,9 +39,18 @@ private:
 	float RightSpeed = 1.f;
 	UPROPERTY(EditAnywhere)
 	float UpSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float Height = 200.f; 
+	UPROPERTY(EditAnywhere)
+	float FallInitialVelocity = 1.f;
+	UPROPERTY(EditAnywhere)
+	float FallMultiplier = 1.5f;
+	
+	
+	float FallVelocity = 0.f;
 	
 	UPROPERTY(EditAnywhere)
-	class USphereComponent* PlayerCollision;
+	class USphereComponent* Collision;
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)

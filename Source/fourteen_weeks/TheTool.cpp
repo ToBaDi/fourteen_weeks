@@ -9,15 +9,15 @@
 
 ATheTool::ATheTool()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	
-	PlayerCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
-	RootComponent = PlayerCollision;
-	PlayerCollision->InitSphereRadius(100.f);
-	PlayerCollision->SetSimulatePhysics(true);
+	Collision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
+	RootComponent = Collision;
+	Collision->InitSphereRadius(100.f);
+	Collision->SetSimulatePhysics(true);
 	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->AttachToComponent(PlayerCollision, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	Camera->AttachToComponent(Collision, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
 	FPMove = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FPMove"));
 	bUseControllerRotationYaw = true;
@@ -34,6 +34,21 @@ void ATheTool::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FHitResult HitResult;
+	const FVector StartTrace{ GetActorLocation() };
+	const FVector EndTrace{ StartTrace + (FVector::DownVector * Height) };
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult, StartTrace,
+		EndTrace, ECC_WorldStatic,
+		FCollisionQueryParams()))
+	{
+		FallVelocity = FallInitialVelocity;
+	}
+	else
+	{
+		FallVelocity *= FallMultiplier;
+		FPMove->AddInputVector(FVector::DownVector * FallVelocity * DeltaTime);
+	}
 }
 
 void ATheTool::SetupPlayerInputComponent(UInputComponent* const PlayerInputComponent)
