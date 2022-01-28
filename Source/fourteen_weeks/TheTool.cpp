@@ -22,6 +22,7 @@ ATheTool::ATheTool()
 	FPMove = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FPMove"));
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationPitch = true;
+	bUseControllerRotationRoll = true;
 }
 
 void ATheTool::BeginPlay()
@@ -54,16 +55,34 @@ void ATheTool::Tick(const float DeltaTime)
 void ATheTool::SetupPlayerInputComponent(UInputComponent* const PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
 	PlayerInputComponent->BindAxis("Turn", this, &ATheTool::Turn);
+	PlayerInputComponent->BindAxis("Roll", this, &ATheTool::Roll);
 	PlayerInputComponent->BindAxis("Look", this, &ATheTool::Look);
 	PlayerInputComponent->BindAxis("Forward", this, &ATheTool::Forward);
 	PlayerInputComponent->BindAxis("Right", this, &ATheTool::Right);
 	PlayerInputComponent->BindAxis("Up", this, &ATheTool::Up);
+
+	PlayerInputComponent->BindAction("ResetRoll", IE_Released, this, &ATheTool::ResetRoll);
+	PlayerInputComponent->BindAction("TurnToRoll", IE_Pressed, this, &ATheTool::TurnToRollOn);
+	PlayerInputComponent->BindAction("TurnToRoll", IE_Released, this, &ATheTool::TurnToRollOff);
 }
 
 void ATheTool::Turn(const float Amount)
 {
-	AddControllerYawInput(Amount * TurnSpeed);
+	if (IsTurnToRoll)
+	{
+		Roll(Amount);
+	}
+	else
+	{
+		AddControllerYawInput(Amount * TurnSpeed);
+	}
+}
+
+void ATheTool::Roll(const float Amount)
+{
+	AddControllerRollInput(Amount * RollSpeed);
 }
 
 void ATheTool::Look(const float Amount)
@@ -86,5 +105,22 @@ void ATheTool::Right(const float Amount)
 void ATheTool::Up(const float Amount)
 {
 	FPMove->AddInputVector(FVector::UpVector * (Amount * UpSpeed));
+}
+
+void ATheTool::ResetRoll()
+{
+	FRotator NewRot{ GetControlRotation() };
+	NewRot.Roll = 0;
+	Controller->SetControlRotation(NewRot);
+}
+
+void ATheTool::TurnToRollOn()
+{
+	IsTurnToRoll = true;
+}
+
+void ATheTool::TurnToRollOff()
+{
+	IsTurnToRoll = false;
 }
 

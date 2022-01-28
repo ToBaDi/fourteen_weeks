@@ -24,13 +24,20 @@ public:
 
 private:
 	void Turn(const float Amount);
+	void Roll(const float Amount);
 	void Look(const float Amount);
 	void Forward(const float Amount);
 	void Right(const float Amount);
 	void Up(const float Amount);
 
+	void ResetRoll();
+	void TurnToRollOn();
+	void TurnToRollOff();
+
 	UPROPERTY(EditAnywhere)
 	float TurnSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float RollSpeed = 1.f;
 	UPROPERTY(EditAnywhere)
 	float LookSpeed = 1.f;
 	UPROPERTY(EditAnywhere)
@@ -46,8 +53,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	float FallMultiplier = 1.5f;
 	
-	
-	float FallVelocity = 0.f;
+	float FallVelocity = 1.f;
+	bool IsTurnToRoll = false;
 	
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* Collision;
