@@ -23,6 +23,27 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* const PlayerInputComponent) override;
 
 private:
-	UPROPERTY()
-	class UCameraComponent* Camera;  
+	void Turn(const float Amount);
+	void Look(const float Amount);
+	void Forward(const float Amount);
+	void Right(const float Amount);
+	void Up(const float Amount);
+
+	UPROPERTY(EditAnywhere)
+	float TurnSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float LookSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float ForwardSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float RightSpeed = 1.f;
+	UPROPERTY(EditAnywhere)
+	float UpSpeed = 1.f;
+	
+	UPROPERTY(EditAnywhere)
+	class USphereComponent* PlayerCollision;
+	UPROPERTY(EditAnywhere)
+	class UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere)
+	class UFloatingPawnMovement* FPMove;
 };
