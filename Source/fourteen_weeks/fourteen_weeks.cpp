@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2022 Mohammad Jamal Sarvarian No rights reserved
 
 #include "fourteen_weeks.h"
 #include "Modules/ModuleManager.h"

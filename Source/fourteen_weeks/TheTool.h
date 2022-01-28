@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2022 Mohammad Jamal Sarvarian No rights reserved
 
 #pragma once
 
@@ -7,23 +7,22 @@
 #include "TheTool.generated.h"
 
 UCLASS()
-class FOURTEEN_WEEKS_API ATheTool : public APawn
+class FOURTEEN_WEEKS_API ATheTool final : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ATheTool();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(const float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* const PlayerInputComponent) override;
 
+private:
+	UPROPERTY()
+	class UCameraComponent* Camera;  
 };

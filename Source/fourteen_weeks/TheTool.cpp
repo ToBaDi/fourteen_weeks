@@ -1,32 +1,32 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2022 Mohammad Jamal Sarvarian No rights reserved
 
 
 #include "TheTool.h"
 
-// Sets default values
+#include "Camera/CameraComponent.h"
+
 ATheTool::ATheTool()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	
 
 }
 
-// Called when the game starts or when spawned
 void ATheTool::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
-void ATheTool::Tick(float DeltaTime)
+void ATheTool::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
-void ATheTool::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATheTool::SetupPlayerInputComponent(UInputComponent* const PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
