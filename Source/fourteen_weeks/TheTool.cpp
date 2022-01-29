@@ -3,21 +3,22 @@
 
 #include "TheTool.h"
 
-#include "Camera/CameraComponent.h"
-#include "Components/SphereComponent.h"
+// #include "Camera/CameraComponent.h"
+// #include "Components/BoxComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 ATheTool::ATheTool()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
-	Collision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
-	RootComponent = Collision;
-	Collision->InitSphereRadius(100.f);
-	Collision->SetSimulatePhysics(true);
-	
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->AttachToComponent(Collision, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	// Collision = CreateDefaultSubobject<UBoxComponent>(TEXT("SphereCollision"));
+	// RootComponent = Collision;
+	// Collision->InitBoxExtent(FVector(100.f, 100.f, 50.f));
+	// // Collision->InitSphereRadius(100.f);
+	// Collision->SetSimulatePhysics(true);
+	// 
+	// Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	// Camera->AttachToComponent(Collision, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
 	FPMove = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FPMove"));
 	bUseControllerRotationYaw = true;
