@@ -56,10 +56,10 @@ private:
 	float FallVelocity = 1.f;
 	bool IsTurnToRoll = false;
 	
-	// UPROPERTY(EditAnywhere)
-	// class UBoxComponent* Collision;
-	// UPROPERTY(EditAnywhere)
-	// class UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere)
+	class UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* FPMove;
 

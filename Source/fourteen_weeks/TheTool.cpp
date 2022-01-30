@@ -3,22 +3,23 @@
 
 #include "TheTool.h"
 
-// #include "Camera/CameraComponent.h"
-// #include "Components/BoxComponent.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 ATheTool::ATheTool()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
-	// Collision = CreateDefaultSubobject<UBoxComponent>(TEXT("SphereCollision"));
-	// RootComponent = Collision;
-	// Collision->InitBoxExtent(FVector(100.f, 100.f, 50.f));
-	// // Collision->InitSphereRadius(100.f);
-	// Collision->SetSimulatePhysics(true);
-	// 
-	// Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	// Camera->AttachToComponent(Collision, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	 
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	Mesh->SetSimulatePhysics(true);
+	Mesh->SetEnableGravity(false);
+	Mesh->SetLinearDamping(8.f);
+	Mesh->SetAngularDamping(6.f);
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->FieldOfView = 100.f;
+	Camera->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
 	FPMove = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FPMove"));
 	bUseControllerRotationYaw = true;
@@ -129,7 +130,7 @@ bool ATheTool::IsOnGround()
 	const FVector EndTrace{ StartTrace + (FVector::DownVector * Height) };
 	return GetWorld()->LineTraceSingleByChannel(
 		HitResult, StartTrace,
-		EndTrace, ECC_WorldStatic,
+		EndTrace, ECC_Visibility,
 		FCollisionQueryParams());
 }
 
