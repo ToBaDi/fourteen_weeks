@@ -54,7 +54,8 @@ private:
 	float FallMultiplier = 1.5f;
 	
 	float FallVelocity = 1.f;
-	bool IsTurnToRoll = false;
+	bool bTurnToRoll = false;
+	bool bOnGround = false;
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
@@ -63,5 +64,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UFloatingPawnMovement* FPMove;
 
-	bool IsOnGround();
+	bool IsOnGround() const;
 };

@@ -3,6 +3,7 @@
 
 #include "TheTool.h"
 
+#include "DrawDebugHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
@@ -37,7 +38,9 @@ void ATheTool::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (IsOnGround())
+	bOnGround = IsOnGround();
+
+	if (bOnGround)
 	{
 		FallVelocity = FallInitialVelocity;
 	}
@@ -66,7 +69,7 @@ void ATheTool::SetupPlayerInputComponent(UInputComponent* const PlayerInputCompo
 
 void ATheTool::Turn(const float Amount)
 {
-	if (IsTurnToRoll)
+	if (bTurnToRoll)
 	{
 		Roll(Amount);
 	}
@@ -100,7 +103,7 @@ void ATheTool::Right(const float Amount)
 
 void ATheTool::Up(const float Amount)
 {
-	if (IsOnGround())
+	if (bOnGround)
 	{
 		FPMove->AddInputVector(FVector::UpVector * (Amount * UpSpeed));
 	}
@@ -115,22 +118,29 @@ void ATheTool::ResetRoll()
 
 void ATheTool::TurnToRollOn()
 {
-	IsTurnToRoll = true;
+	bTurnToRoll = true;
 }
 
 void ATheTool::TurnToRollOff()
 {
-	IsTurnToRoll = false;
+	bTurnToRoll = false;
 }
 
-bool ATheTool::IsOnGround()
+bool ATheTool::IsOnGround() const
 {
 	FHitResult HitResult;
 	const FVector StartTrace{ GetActorLocation() };
 	const FVector EndTrace{ StartTrace + (FVector::DownVector * Height) };
-	return GetWorld()->LineTraceSingleByChannel(
-		HitResult, StartTrace,
-		EndTrace, ECC_Visibility,
-		FCollisionQueryParams());
+	const bool Result{
+		GetWorld()->LineTraceSingleByChannel(
+			HitResult, StartTrace,
+			EndTrace, ECC_Visibility,
+			FCollisionQueryParams())
+	};
+	GetWorld()->LineTraceSingleByProfile()
+	
+	// DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red,false, 1.f);
+	
+	return Result;
 }
 
